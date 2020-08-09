@@ -1,5 +1,5 @@
 
-from color_extraction_functions import *
+from color_extraction.color_extraction_functions import *
 
 ############### execution ###############
 user_variables = collect_user_entered_variables()
@@ -19,4 +19,4 @@ if user_variables['image_link'] != 'paste image link here':
         display_background_color(background_df)
     display_image_with_clustered_colors(full_image_data_df, image_shape)
 else:
-    st.write('Past an image link (no quotes needed) into the image link field in the sidebar.')
+    st.write('Paste an image link (no quotes needed) into the image link field in the sidebar.')

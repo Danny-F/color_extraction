@@ -1,5 +1,5 @@
 ## Color Extraction
-Extracting colors from images
+Extracting colors from images using dynamic clustering.
 
 # Introduction
 For a different project, I needed to be able to get more detailed color information for products and so I created a process to extract colors from image files.
@@ -16,10 +16,14 @@ Python packages:
 - pandas
 - itertools
 - matplotlib
-- skimage
 - sklearn
 - streamlit
 
 
-#Instructions
-- Need to run <streamlit hello> first
+# Instructions
+To be able to run the code on your computer, follow the instructions below (~5 min):
+1) Clone the repo
+2) In command line (Mac: terminal), navigate to the repo you just cloned which will appear as a folder called 'color_extraction'.
+3) While inside of this folder run 'python setup.py install'
+4) While still inside of the "color_extraction" folder, execute 'streamlit run run_color_extraction.py' in the command line. You maybe prompted by streamlit whether you want to provide an email to get on their info list. There is no need to do this and you can just hit ENTER without providing and email.
+5) Streamlit should have opened up a browser for you and created a page that has the text "Color Extraction" within it. Find and image link of your choosing, paste the link in the sidebar, and watch as the script extracts the main colors from the image!
