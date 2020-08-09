@@ -16,11 +16,16 @@ Python packages:
 - pandas
 - itertools
 - matplotlib
-- skimage
 - sklearn
 - streamlit
-- pyarrow
 
 
 #Instructions
-- Need to run <streamlit hello> first
+Running the code on your computer will just take 5 min to setup and is only 3 steps.
+
+1) Clone the repo
+2) In command line (Mac: terminal), navigate to the repo you just cloned which will appear as a folder called 'color_extraction'.
+3) While inside of this folder run 'python setup.py install'
+4) Run 'streamlit run run_color_extraction.py'
+- You maybe prompted by streamlit whether you want to provide an email to get on their info list. There is no need to do this and you can just hit ENTER without providing and email.
+5) Streamlit should have opened up a browser for you and created a page that has the text "Color Extraction" within it. Find and image link of your choosing, paste the link in the sidebar, and watch as the script extracts the main colors from the image!
