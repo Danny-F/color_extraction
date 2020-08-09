@@ -123,6 +123,5 @@ def display_background_color(background_df):
 
 #create and display the new image with the averaged colors
 def display_image_with_clustered_colors(full_image_data_df, image_shape):
-    print(image_shape)
     image_avg_rgb = np.asarray(full_image_data_df['avg_rgb'].tolist()).reshape(image_shape)
     st.image(image_avg_rgb, caption = 'clustered colors')
