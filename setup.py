@@ -8,6 +8,6 @@ setup(
    author='Danny Farrington',
    author_email='dannyfarrington5@gmail.com',
    packages=['color_extraction'],
-   install_requires=['numpy', 'pandas', 'itertools', 'matplotlib',
+   install_requires=['numpy', 'pandas', 'matplotlib',
                      'sklearn', 'scikit-image', 'streamlit'],
 )
