@@ -20,15 +20,15 @@ def collect_user_entered_variables():
     image_link = st.sidebar.text_input('Image Link', 'paste image link here')
     inertia_change_threshold = st.sidebar.slider('Inertia % Change Threshold', -100, -1, -25)
     ignore_background = st.sidebar.checkbox('Ignore background color?', value=True)
-    user_entered_variables = {'image_link': image_link,
+    user_variables = {'image_link': image_link,
                             'inertia_change_threshold': inertia_change_threshold,
                             'ignore_background': ignore_background}
-    return user_entered_variables
+    return user_variables
 
 
 #display original image
 def display_original_image(image_link):
-    st.image(user_variables['image_link'], caption = 'normal image')
+    st.image(image_link, caption = 'normal image')
 
 
 #reading in image and generating l*a*b version as well
@@ -83,7 +83,7 @@ def determine_ideal_cluster_number(image_data_df, inertia_change_threshold):
 def assign_clusters(image_data_df, ideal_cluster_num):
     st.write('Ideal cluster number: {}'.format(ideal_cluster_num))
     km = KMeans(n_clusters = ideal_cluster_num)
-    km = km.fit(nobg_df[['c', 'i', 'e']])
+    km = km.fit(image_data_df[['c', 'i', 'e']])
     return km.labels_
 
 #average data by cluster cluster
@@ -104,8 +104,10 @@ def display_color_pie_graph(cluster_grouped_df):
     st.pyplot()
 
 #joining the avgeraged rgb values back into the full list of pixels
-def join_cluster_data_to_full_image_data(image_data_df, cluster_grouped_df, background_df):
-    full_image_data_df = pd.concat([image_data_df,background_df])
+def join_cluster_data_to_full_image_data(image_data_df, background_df, cluster_grouped_df):
+    print(cluster_grouped_df.columns)
+    print(image_data_df.shape)
+    full_image_data_df = pd.concat([image_data_df,background_df], sort=True)
     full_image_data_df = full_image_data_df.reset_index()
     full_image_data_df = pd.merge(full_image_data_df, cluster_grouped_df[['cluster','avg_rgb']], how='left', on='cluster')
     full_image_data_df.set_index(full_image_data_df['index'], inplace=True)
@@ -121,28 +123,7 @@ def display_background_color(background_df):
     st.image(bg_image)
 
 #create and display the new image with the averaged colors
-def display_image_with_clustered_colors(image_shape):
-        image_avg_rgb = np.asarray(full_image_data_df['avg_rgb'].tolist()).reshape(image_shape)
-        st.image(image_avg_rgb, caption = 'clustered colors')
-
-############### execution ###############
-
-user_variables = collect_user_entered_variables()
-
-if user_variables['image_link'] != 'paste image link here':
-    display_original_image(user_variables['image_link'])
-    image_rgb, image_cie, image_shape = import_image(user_variables['image_link'])
-    image_data_df, background_df = format_image_data_into_dataframe(image_rgb, image_cie,
-                                                                    user_variables['ignore_background'])
-    ideal_cluster_num = determine_ideal_cluster_number(image_data_df,
-                                                       user_variables['inertia_change_threshold'])
-    image_data_df['cluster'] = assign_clusters(image_data_df, ideal_cluster_num)
-    cluster_grouped_df = avg_data_by_cluster(image_data_df)
-    display_color_pie_graph(cluster_grouped_df)
-    full_image_data_df = join_cluster_data_to_full_image_data(image_data_df, background_df,
-                                                              cluster_grouped_df)
-    if user_variables['ignore_background'] == True:
-        display_background_color(background_df)
-    display_image_with_clustered_colors(full_image_data_df, image_shape)
-else:
-    st.write('Past an image link (no quotes needed) into the image link field in the sidebar.')
+def display_image_with_clustered_colors(full_image_data_df, image_shape):
+    print(image_shape)
+    image_avg_rgb = np.asarray(full_image_data_df['avg_rgb'].tolist()).reshape(image_shape)
+    st.image(image_avg_rgb, caption = 'clustered colors')
