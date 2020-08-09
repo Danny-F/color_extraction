@@ -11,7 +11,7 @@ Also, instead of using RGB values for the clustering model, the RGB values are c
 # Requirements
 Python packages:
 - matplotlib
-- skimage
+- scikit-image
 - numpy
 - pandas
 - itertools
@@ -19,3 +19,7 @@ Python packages:
 - skimage
 - sklearn
 - streamlit
+
+
+#Instructions
+- Need to run <streamlit hello> first
