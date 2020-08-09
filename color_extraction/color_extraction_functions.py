@@ -58,6 +58,7 @@ def format_image_data_into_dataframe(image_rgb, image_cie, ignore_background):
     no_background_index = df['rgb_comb']!=background
     no_background_df = df[no_background_index].copy()
     background_df = df[~no_background_index].copy()
+    print(background_df.shape)
     return no_background_df, background_df
 
 #determing the ideal cluster number for clustering pixels
@@ -105,14 +106,12 @@ def display_color_pie_graph(cluster_grouped_df):
 
 #joining the avgeraged rgb values back into the full list of pixels
 def join_cluster_data_to_full_image_data(image_data_df, background_df, cluster_grouped_df):
-    print(cluster_grouped_df.columns)
-    print(image_data_df.shape)
-    full_image_data_df = pd.concat([image_data_df,background_df], sort=True)
+    full_image_data_df = pd.concat([image_data_df,background_df], sort=True).sort_index()
     full_image_data_df = full_image_data_df.reset_index()
     full_image_data_df = pd.merge(full_image_data_df, cluster_grouped_df[['cluster','avg_rgb']], how='left', on='cluster')
     full_image_data_df.set_index(full_image_data_df['index'], inplace=True)
     #for the background color pixels, assign their rgb value to the avg_rgb since they are equal
-    np.where(full_image_data_df['avg_rgb'].isnull(), full_image_data_df['rgb'], full_image_data_df['avg_rgb'])
+    full_image_data_df['avg_rgb'] = np.where(full_image_data_df['avg_rgb'].isnull(), full_image_data_df['rgb'], full_image_data_df['avg_rgb'])
     return full_image_data_df
 
 #displaying the background color that was ignored, if "Ignore background color" was checked
@@ -124,6 +123,5 @@ def display_background_color(background_df):
 
 #create and display the new image with the averaged colors
 def display_image_with_clustered_colors(full_image_data_df, image_shape):
-    print(image_shape)
     image_avg_rgb = np.asarray(full_image_data_df['avg_rgb'].tolist()).reshape(image_shape)
     st.image(image_avg_rgb, caption = 'clustered colors')
