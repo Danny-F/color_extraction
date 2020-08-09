@@ -19,6 +19,7 @@ Python packages:
 - skimage
 - sklearn
 - streamlit
+- pyarrow
 
 
 #Instructions
